@@ -15,27 +15,27 @@ class Program
         while (input != "/exit")
         {
             input = Console.ReadLine();
-
-            switch (input)
+            
+            if (string.IsNullOrWhiteSpace(input))
             {
-                case "":
-                    break;
-                case "/start":
-                    StartCommand();
-                    break;
-                case "/help":
-                    HelpCommand();
-                    break;
-                case "/info":
-                    InfoCommand();
-                    break;
-                case "/echo":
-                    EchoCommand();
-                    break;
-                default:
-                    Console.WriteLine("Неизвестная команда");
-                    break;
-            }    
+                
+            } else if (input == "/start")
+            {
+                StartCommand();
+            } else if (input == "/help")
+            {
+                HelpCommand();
+            } else if (input == "/info")
+            {
+                InfoCommand();
+            } else if (input.StartsWith("/echo"))
+            {
+                EchoCommand(input);
+            }
+            else
+            {
+                Console.WriteLine("Неизвестная команда");
+            }
         }
     }
 
@@ -75,7 +75,7 @@ class Program
         Console.WriteLine("Версия программы 1.0. Дата сборки 28.08.2025");
     }
 
-    static void EchoCommand()
+    static void EchoCommand(string input)
     {
         if (string.IsNullOrWhiteSpace(name))
         {
@@ -85,11 +85,11 @@ class Program
         
         Greeting();
 
-        var input = Console.ReadLine();
+        var text = input.Substring(5).Trim();
 
-        if (!string.IsNullOrWhiteSpace(input))
+        if (!string.IsNullOrWhiteSpace(text))
         {
-            Console.WriteLine(input);
+            Console.WriteLine(text);
         }
     }
 }
