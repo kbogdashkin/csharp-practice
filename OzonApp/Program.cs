@@ -3,7 +3,7 @@
 class Program
 {
     private static string? name;
-    private const string COMMANDS = "/start, /help, /info, /exit";
+    private static string COMMANDS = "/start, /help, /info, /exit";
 
     static void Main(string[] args)
     {
@@ -12,14 +12,16 @@ class Program
 
         string? input = "";
 
-        while (input != "/exit")
+        do
         {
             input = Console.ReadLine();
             
             if (string.IsNullOrWhiteSpace(input))
             {
-                
-            } else if (input == "/start")
+                continue;
+            }
+
+            if (input == "/start")
             {
                 StartCommand();
             } else if (input == "/help")
@@ -36,21 +38,28 @@ class Program
             {
                 Console.WriteLine("Неизвестная команда");
             }
-        }
+        } while (input != "/exit");
     }
 
-    static void Greeting()
+    static bool Greeting(string str = "")
     {
-        if (name != null)
+        if (!string.IsNullOrWhiteSpace(name))
         {
             Console.WriteLine($"Добрый день, {name}");
+            return true;
         }
-        
+
+        Console.WriteLine($"Введите имя, {str}");
+        return false;
     }
 
     static void StartCommand()
     {
-        Console.WriteLine("Введите имя");
+        if (Greeting())
+        {
+            return;
+        }
+
         var input = Console.ReadLine();
 
         if (string.IsNullOrWhiteSpace(input))
@@ -60,36 +69,40 @@ class Program
         }
 
         name = input;
-        Greeting();
+        Console.WriteLine($"Добрый день, {name}");
+        
+        COMMANDS = COMMANDS.Insert(22, "/echo, ");
     }
     
     static void HelpCommand()
     {
-        Greeting();
-        Console.WriteLine($"Для того чтобы пользоваться программой, вам надо ввести одну из команд {COMMANDS}");
+        if (Greeting("с помощью команды /start"))
+        {
+            Console.WriteLine($"Для того чтобы пользоваться программой, вам надо ввести одну из команд {COMMANDS}");
+        }
+        
     }
 
     static void InfoCommand()
     {
-        Greeting();
-        Console.WriteLine("Версия программы 1.0. Дата сборки 28.08.2025");
+        if (Greeting("с помощью команды /start"))
+        {
+            Console.WriteLine("Версия программы 1.0. Дата сборки 28.08.2025");
+        }
     }
 
-    static void EchoCommand(string input)
+    static void EchoCommand(string str)
     {
-        if (string.IsNullOrWhiteSpace(name))
+        if (Greeting("с помощью команды /start"))
         {
-            Console.WriteLine("Воспользуйтесь командой /start для ввода имени");
-            return;
-        }
-        
-        Greeting();
+            var echo = str.Split(" ");
 
-        var text = input.Substring(5).Trim();
+            if (echo.Length != 2)
+            {
+                return;
+            }
 
-        if (!string.IsNullOrWhiteSpace(text))
-        {
-            Console.WriteLine(text);
+            Console.WriteLine(echo[1]);
         }
     }
 }
