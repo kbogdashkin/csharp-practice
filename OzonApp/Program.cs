@@ -15,7 +15,7 @@ class Program
         do
         {
             input = Console.ReadLine();
-            
+
             if (string.IsNullOrWhiteSpace(input))
             {
                 continue;
@@ -24,13 +24,16 @@ class Program
             if (input == "/start")
             {
                 StartCommand();
-            } else if (input == "/help")
+            }
+            else if (input == "/help")
             {
                 HelpCommand();
-            } else if (input == "/info")
+            }
+            else if (input == "/info")
             {
                 InfoCommand();
-            } else if (input.StartsWith("/echo"))
+            }
+            else if (input.StartsWith("/echo"))
             {
                 EchoCommand(input);
             }
@@ -70,17 +73,16 @@ class Program
 
         name = input;
         Console.WriteLine($"Добрый день, {name}");
-        
+
         COMMANDS = COMMANDS.Insert(22, "/echo, ");
     }
-    
+
     static void HelpCommand()
     {
         if (Greeting("с помощью команды /start"))
         {
             Console.WriteLine($"Для того чтобы пользоваться программой, вам надо ввести одну из команд {COMMANDS}");
         }
-        
     }
 
     static void InfoCommand()
